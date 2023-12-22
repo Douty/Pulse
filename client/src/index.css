@@ -5,11 +5,18 @@
 .info-card{
     @apply bg-ash rounded-xl my-3 p-4 flex flex-col gap-2
 }
-
-.page-section{
-    scroll-snap-align: end;
+.input{
+    @apply rounded-lg p-1 outline-none 
 }
-.home-container{
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-}
+.animated-glow {
+    animation: glow 4s infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      box-shadow: rgba(235, 235, 235, 0.9) 0px 0px 10px; /* Smaller glow */
+    }
+    to {
+      box-shadow: rgba(235, 235, 235, 0.9) 0px 0px 20px; /* Larger glow */
+    }
+  }
