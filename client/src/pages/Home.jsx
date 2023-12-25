@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import downarrow from "../assets/downarrow.svg"
+import downarrow from "../assets/downarrow.svg";
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState(18);
@@ -15,6 +17,7 @@ const Home = () => {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordVerified, setPasswordVerified] = useState();
   const [warning, setWarning] = useState()
+  const [warningMessage, setWarningMessage] = useState("");
 
   
 
@@ -32,7 +35,13 @@ const Home = () => {
     }
     if (password == passwordCheck){
       console.log(user);
-      //axios.post("/api/getuserdata",({user:user}));
+      axios.post("/api/getuserdata",({user:user})).then(res =>{
+        if (res.status === 200){
+          navigate("/login");
+        }
+      }).catch(error =>{
+        setWarningMessage(`${error.response.data.message}`)
+      });
     } else {
       setWarning(true);
     }
@@ -40,44 +49,46 @@ const Home = () => {
   }
 
   return(
-    <main className="snap-y snap-mandatory overflow-y-scroll h-screen">
+    <main className="snap-y snap-mandatory  h-screen font-Zen">
       {/* Hero Section */}
-      <section className="flex flex-col text-center pt-56 gap-2 h-[100vh] bg-slate text-white snap-start">
+      <section className="flex flex-col justify-center text-center  gap-2 h-[100vh] bg-slate text-white snap-start">
         <h2>Welcome to</h2>
-        <h1 className="text-5xl">Pulse</h1>
+        <h1 className="text-8xl">Pulse</h1>
         <h2>Meet your new personal workout assistant</h2>
+        
         <img src={downarrow} className="h-12 py-2 animate-bounce stroke-white"/>
         <h6 className="text-sm">Scroll down to learn more</h6>
       </section>
       {/* Information Section */}
-      <section className="h-[100vh] p-6 flex flex-col items-center bg-slate text-white gap-3 snap-start" >
+      <section className="h-[100vh] px-3 flex flex-col items-center bg-slate text-white gap-3 snap-start " >
         <h1 className="text-center text-3xl ">Let me show you what i could do</h1>
+        <div className=" flex justify-center gap-3 flex-wrap">
+          <section className="w-[300px] info-card mt-12">
+            <h1 className="font-bold">Tracking Macros</h1>
+            <p>Ensure your meeting your macro goals with a detailed chart</p>
+          </section>
 
-        <section className="w-[300px] info-card mt-12">
-          <h1 className="font-bold">Tracking Macros</h1>
-          <p>Ensure your meeting your macro goals with a detailed chart</p>
-        </section>
+          <section className="w-[300px] info-card">
+            <h1 className="font-bold">Routine Tracker</h1>
+            <p>Keep a journal of your workouts.</p>
+          </section>
 
-        <section className="w-[300px] info-card">
-          <h1 className="font-bold">Routine Tracker</h1>
-          <p>Keep a journal of your workouts.</p>
-        </section>
-
-        <section className="w-[300px] info-card">
-          <h1 className="font-bold ">Join the community!</h1>
-          <p>Encorage your friends to get active! Share recipes, workouts and more</p>
-        </section>
-        <section className="w-[300px] info-card flex justify-center">
-          <h1 className="font-bold text-2xl">...and so much more!</h1>
-        </section>
-        
-        <h1 className="pt-12">Scroll down to create a profile</h1>
-        <img src={downarrow} className="h-12 py-2 animate-bounce stroke-white"/>
+          <section className="w-[300px] info-card">
+            <h1 className="font-bold ">Join the community!</h1>
+            <p>Encorage your friends to get active! Share recipes, workouts and more</p>
+          </section>
+          <section className="w-[300px] info-card flex justify-center">
+            <h1 className="font-bold text-2xl">...and so much more!</h1>
+          </section>
+        </div>
+        <h1 className="">Scroll down to create a profile</h1>
+        <img src={downarrow} className="h-12 py-2 animate-bounce md:hidden stroke-white"/>
       </section>
-      {/* Registration Section */}
-      <section className="h-[100vh] flex flex-col p-4 snap-start bg-slate" >
-        <h1 className="text-center text-2xl text-white">Create a Profile!</h1>
-        <section className="flex flex-col items-center gap-3 mt-10 ">
+      {/* Profile Section */}
+      <section className="h-[100vh] snap-start bg-slate p-2 " >
+        <h1 className="text-center text-3xl text-white">Create a Profile!</h1>
+        <section className="p-3 mt-2 flex flex-wrap justify-evenly gap-3 ">
+        <div className="flex flex-col gap-3 items-center justify-center">
           <label className="text-white ">Whats your name?</label>
           <input
             placeholder="Name"
@@ -102,12 +113,12 @@ const Home = () => {
             }}
           
           />
-          <label className="text-white ">Biological Gender</label>
           <div className="flex gap-2 text-white">
+	          <label className="text-white ">Biological Gender</label>
             <input
               id="male"
               name="gender"
-              className="input"
+              className=""
               type="radio"
               value="male"
               onChange={(e)=>{
@@ -120,7 +131,7 @@ const Home = () => {
             <input
               id="female"
               name="gender"
-              className="input"
+              className=""
               type="radio"
               value="female"
               onChange={(e)=>{
@@ -130,12 +141,13 @@ const Home = () => {
             />
             <label htmlFor="female">Female</label>
           </div>
-          <label className="text-white">Unit of Measurement</label>
-          <div className="flex gap-2 text-white">
+          
+          <div className="flex gap-2 text-white ">
+            <label className="text-white">Unit of Measurement</label>
             <input
               id="metric"
               name="weightmetric"
-              className="input"
+              className=""
               type="radio"
               value="metric"
               onChange={(e)=>{
@@ -147,7 +159,7 @@ const Home = () => {
             <input
               id="imperial"
               name="weightmetric"
-              className="input"
+              className=""
               type="radio"
               value="imperial"
               onChange={(e)=>{
@@ -155,7 +167,10 @@ const Home = () => {
               }}
             />
             <label htmlFor="imperial">Imperial</label>
-          </div>
+          </div>    
+          
+        </div>
+        <div className="flex flex-col gap-2 items-center">
           <label className="text-white">Current weight</label>
 
           <input 
@@ -169,7 +184,7 @@ const Home = () => {
               }
             }}
           />
-          <label className="text-white">Goal weight</label>
+        <label className="text-white">Goal weight</label>
           <input 
             className="input"
             type="number"
@@ -182,13 +197,6 @@ const Home = () => {
             }}
           />
           <label className="text-white">Height</label>
-          <details className="text-center text-white leading-8">
-            <summary>Click to see example</summary>
-            If you are 5 feet and 6 inches, using the metric option you would write it as 5.6.<br></br>
-
-            In imperial you would write it as 170.69
-          </details>
-          
           <div className="flex">
 
             <input 
@@ -211,11 +219,13 @@ const Home = () => {
               ( <h1 className="text-white pl-2 w-2">cm</h1> )
              }
           </div>
-        </section>
-        <div className="text-white flex flex-col justify-center">
-          <h1 className="pt-12 text-center">Scroll down to make an account</h1>
-          <img src={downarrow} className="h-12 py-2 animate-bounce stroke-white"/>
+          
+             
         </div>
+          
+        </section>
+        <h1 className="text-center text-white pt-5">Scroll down to finish creating your account!</h1>
+        
       </section>
       <section className="bg-slate snap-start h-[100vh] text-center items-center p-6 flex flex-col gap-3">
         <h1 className="text-white text-2xl py-3">Create your account</h1>
@@ -247,7 +257,7 @@ const Home = () => {
           }}
         />
         <button className="border-2 text-white p-3 mt-5 animated-glow" onClick={()=>{handleSubmit()}}>Begin your journey with pulse</button>
-        {/*warning ? (<h1>Password does not match</h1>):(<h1>Everything is good to go!</h1>)*/}
+        {warning ? (<h1>{warningMessage}</h1>):(<h1></h1>)}
       </section>
       
 

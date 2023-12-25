@@ -8,7 +8,7 @@ function App() {
   const [toggle,setToggle] = useState(false);
   return (
   <>
-  <nav className="relative flex flex-col p-6">
+  <nav className=" flex flex-col p-6 sticky">
   <svg 
     width="24" 
     height="24" 

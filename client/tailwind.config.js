@@ -7,6 +7,9 @@ export default {
         slate: "#18191C",
         ash: "#262626",
       },
+      fontFamily: {
+        Zen: ["Zen Kaku Gothic Antique"],
+      },
     },
   },
   plugins: [],
